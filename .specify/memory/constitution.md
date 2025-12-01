@@ -1,55 +1,94 @@
-# [PROJECT_NAME] Constitution
-<!-- Example: Spec Constitution, TaskFlow Constitution, etc. -->
+<!--
+Sync Impact Report:
+Version change: N/A → 1.0.0 (Initial constitution)
+Modified principles: N/A (all new)
+Added sections: Technology Stack, Deployment Strategy, RAG System Architecture
+Removed sections: N/A
+Templates requiring updates:
+  - ⚠ pending: .specify/templates/plan-template.md (not found, will create if needed)
+  - ⚠ pending: .specify/templates/spec-template.md (not found, will create if needed)
+  - ⚠ pending: .specify/templates/tasks-template.md (not found, will create if needed)
+Follow-up TODOs: None
+-->
+
+# Physical AI Humanoid Robotics Textbook Constitution
 
 ## Core Principles
 
-### [PRINCIPLE_1_NAME]
-<!-- Example: I. Library-First -->
-[PRINCIPLE_1_DESCRIPTION]
-<!-- Example: Every feature starts as a standalone library; Libraries must be self-contained, independently testable, documented; Clear purpose required - no organizational-only libraries -->
+### I. Documentation-First Architecture
+All project content MUST be structured as modular documentation chapters suitable for Docusaurus. Each module (chapter) MUST be self-contained, independently navigable, and maintainable. Content structure MUST support both human reading and programmatic embedding into vector databases. Clear separation between content (markdown) and presentation (Docusaurus configuration) is required.
 
-### [PRINCIPLE_2_NAME]
-<!-- Example: II. CLI Interface -->
-[PRINCIPLE_2_DESCRIPTION]
-<!-- Example: Every library exposes functionality via CLI; Text in/out protocol: stdin/args → stdout, errors → stderr; Support JSON + human-readable formats -->
+**Rationale**: The primary deliverable is an educational textbook. All technical components (RAG system, AI agent) serve to enhance the book's accessibility and interactivity, not replace it.
 
-### [PRINCIPLE_3_NAME]
-<!-- Example: III. Test-First (NON-NEGOTIABLE) -->
-[PRINCIPLE_3_DESCRIPTION]
-<!-- Example: TDD mandatory: Tests written → User approved → Tests fail → Then implement; Red-Green-Refactor cycle strictly enforced -->
+### II. Modular Content Organization
+The book MUST be organized into discrete modules (chapters), each covering a distinct topic within Physical AI, Humanoid Robotics. Modules MUST have clear boundaries, dependencies, and learning progression. Each module MUST be version-controlled independently where possible, with clear ownership and update procedures.
 
-### [PRINCIPLE_4_NAME]
-<!-- Example: IV. Integration Testing -->
-[PRINCIPLE_4_DESCRIPTION]
-<!-- Example: Focus areas requiring integration tests: New library contract tests, Contract changes, Inter-service communication, Shared schemas -->
+**Rationale**: Modular structure enables parallel development, easier maintenance, and supports granular embedding strategies for the RAG system.
 
-### [PRINCIPLE_5_NAME]
-<!-- Example: V. Observability, VI. Versioning & Breaking Changes, VII. Simplicity -->
-[PRINCIPLE_5_DESCRIPTION]
-<!-- Example: Text I/O ensures debuggability; Structured logging required; Or: MAJOR.MINOR.BUILD format; Or: Start simple, YAGNI principles -->
+### III. Vector Database Integration (NON-NEGOTIABLE)
+All book content MUST be embeddable into the Qdrant vector database. Content structure MUST support chunking strategies that preserve semantic meaning. Embedding pipeline MUST be reproducible, versioned, and testable. Vector database schema MUST be documented and version-controlled.
 
-### [PRINCIPLE_6_NAME]
+**Rationale**: The RAG chatkit is a core feature requiring reliable, accurate retrieval of book content. Content structure must be optimized for embedding quality.
 
+### IV. AI Agent Architecture
+The AI Agent MUST use OpenAI Agents SDK and MUST be connected to the Qdrant vector database for retrieval. Agent responses MUST be traceable to source content (citations). Agent API MUST be exposed via FastAPI with clear endpoint documentation. Agent behavior MUST be deterministic for identical queries (within model constraints).
 
-[PRINCIPLE__DESCRIPTION]
+**Rationale**: Consistent, citable responses enhance educational value and user trust in the system.
 
-## [SECTION_2_NAME]
-<!-- Example: Additional Constraints, Security Requirements, Performance Standards, etc. -->
+### V. Deployment Standards
+The Docusaurus book MUST deploy to GitHub Pages with automated CI/CD. The AI Agent MUST deploy to Hugging Face Space via Docker image. All deployment configurations MUST be version-controlled, reproducible, and documented. Deployment failures MUST not affect the book's availability (decoupled systems).
 
-[SECTION_2_CONTENT]
-<!-- Example: Technology stack requirements, compliance standards, deployment policies, etc. -->
+**Rationale**: Reliable, automated deployments reduce maintenance overhead and ensure consistent user experience.
 
-## [SECTION_3_NAME]
-<!-- Example: Development Workflow, Review Process, Quality Gates, etc. -->
+### VI. API-First Backend Design
+The FastAPI backend MUST provide RESTful endpoints for the chatkit frontend. API responses MUST follow consistent error handling and status codes. API schema MUST be documented (OpenAPI/Swagger). Backend MUST be independently testable and deployable.
 
-[SECTION_3_CONTENT]
-<!-- Example: Code review requirements, testing gates, deployment approval process, etc. -->
+**Rationale**: Clear API contracts enable frontend development and future integrations.
+
+## Technology Stack Requirements
+
+### Mandatory Technologies
+- **Documentation**: Docusaurus (latest stable)
+- **Deployment (Book)**: GitHub Pages
+- **Vector Database**: Qdrant
+- **AI Framework**: OpenAI Agents SDK
+- **Backend API**: FastAPI
+- **Deployment (Agent)**: Hugging Face Space (Docker)
+- **Frontend (Chatkit)**: To be determined, but MUST consume FastAPI endpoints
+
+### Technology Selection Criteria
+New technology additions MUST be justified by:
+1. Direct requirement from core principles
+2. Integration compatibility with existing stack
+3. Maintenance burden assessment
+4. Community support and documentation quality
+
+## Development Workflow
+
+### Content Development
+1. Content MUST be written in Markdown following Docusaurus conventions
+2. Each module MUST be reviewed for embedding compatibility before merging
+3. Content updates MUST trigger re-embedding pipeline (automated or manual)
+
+### Code Development
+1. All code (FastAPI, embedding scripts, Docker configs) MUST follow language-specific best practices
+2. API changes MUST be backward-compatible or versioned
+3. Docker images MUST be tagged and versioned
+
+### Testing Requirements
+1. Embedding pipeline MUST be tested with sample content
+2. API endpoints MUST have integration tests
+3. Agent responses MUST be validated for citation accuracy
+4. Deployment pipelines MUST be tested in staging before production
 
 ## Governance
-<!-- Example: Constitution supersedes all other practices; Amendments require documentation, approval, migration plan -->
 
-[GOVERNANCE_RULES]
-<!-- Example: All PRs/reviews must verify compliance; Complexity must be justified; Use [GUIDANCE_FILE] for runtime development guidance -->
+This constitution supersedes all other development practices and guidelines. Amendments require:
+1. Documentation of rationale and impact assessment
+2. Update to this file with version increment
+3. Propagation to dependent templates and documentation
+4. Review and approval process (to be defined by project maintainers)
 
-**Version**: [CONSTITUTION_VERSION] | **Ratified**: [RATIFICATION_DATE] | **Last Amended**: [LAST_AMENDED_DATE]
-<!-- Example: Version: 2.1.1 | Ratified: 2025-06-13 | Last Amended: 2025-07-16 -->
+All pull requests and code reviews MUST verify compliance with these principles. Complexity beyond these principles MUST be explicitly justified. Use `.specify/templates/` for development guidance templates.
+
+**Version**: 1.0.0 | **Ratified**: 2025-12-01 | **Last Amended**: 2025-12-01
