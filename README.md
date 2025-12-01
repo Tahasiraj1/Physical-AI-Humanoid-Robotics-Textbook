@@ -42,6 +42,15 @@ This command generates static content into the `build` directory and can be serv
 
 The site is automatically deployed to GitHub Pages via GitHub Actions when changes are pushed to the main branch.
 
+**Live Site**: https://Tahasiraj1.github.io/Physical-AI-Humanoid-Robotics-Textbook/
+
+**Deployment Process**:
+- Push changes to `main` or `master` branch
+- GitHub Actions automatically builds and deploys the site
+- Site is available at the URL above within 5-10 minutes
+
+For detailed deployment instructions and troubleshooting, see [DEPLOYMENT.md](./DEPLOYMENT.md).
+
 ## License
 
 This project is licensed under the MIT License.
