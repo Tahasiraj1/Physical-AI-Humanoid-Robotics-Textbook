@@ -144,6 +144,81 @@ This configuration:
 3. **Dependency management** - Declare dependencies in `package.xml`
 4. **Version control** - Track your `src/` directory, ignore `build/`, `install/`, `log/`
 
+### URDF for Humanoid Robots
+
+**URDF (Unified Robot Description Format)** is an XML-based standard for describing robot structure in ROS 2. URDF files define how a robot is built: its body segments (links), how they connect (joints), and their physical properties. For humanoid robots, URDF provides a standardized way to describe the robot's anatomy, enabling simulation, visualization, and control systems to understand the robot's structure.
+
+#### URDF Structure
+
+A URDF file describes a robot using several key elements:
+
+- **Links**: Represent rigid body segments (e.g., torso, upper arm, lower arm, hand)
+- **Joints**: Define how links connect and how they can move relative to each other
+- **Visual Geometry**: Describes how the robot looks (3D models, colors, materials)
+- **Collision Geometry**: Defines collision boundaries for physics simulation
+- **Physical Properties**: Mass, inertia, and other physical characteristics
+
+Each link in a URDF represents a part of the robot's body, and joints define the relationships between links—how they can rotate, translate, or remain fixed relative to each other.
+
+#### Humanoid-Specific URDF Elements
+
+For humanoid robots, URDF typically includes:
+
+- **Torso**: Central body segment that connects to limbs
+- **Limbs**: Arms (shoulder, upper arm, forearm, hand) and legs (hip, thigh, shin, foot)
+- **Head**: Head segment with optional neck joint
+- **Joints**: Revolute joints for rotation (shoulders, elbows, hips, knees) and fixed joints for rigid connections
+
+A humanoid URDF structure might look like:
+
+```xml
+<!-- Simplified example of humanoid URDF structure -->
+<robot name="humanoid_robot">
+  <!-- Torso (base link) -->
+  <link name="torso">
+    <visual>
+      <geometry>
+        <box size="0.3 0.2 0.4"/>
+      </geometry>
+    </visual>
+  </link>
+  
+  <!-- Left shoulder joint -->
+  <joint name="left_shoulder" type="revolute">
+    <parent link="torso"/>
+    <child link="left_upper_arm"/>
+    <axis xyz="0 1 0"/>
+    <limit lower="-1.57" upper="1.57"/>
+  </joint>
+  
+  <!-- Left upper arm link -->
+  <link name="left_upper_arm">
+    <visual>
+      <geometry>
+        <cylinder radius="0.05" length="0.3"/>
+      </geometry>
+    </visual>
+  </link>
+  
+  <!-- Additional joints and links for elbow, wrist, etc. -->
+</robot>
+```
+
+This structure enables ROS 2 systems to understand the robot's kinematic chain—how movement in one joint affects the position of connected links.
+
+#### URDF and ROS 2
+
+URDF files integrate with ROS 2 through the **robot description** system. ROS 2 nodes can load URDF files to:
+
+- **Visualize the robot** in RViz (ROS 2 visualization tool)
+- **Publish robot state** using `robot_state_publisher` node
+- **Enable simulation** by providing robot structure to simulators like Gazebo
+- **Support control systems** by defining kinematic relationships
+
+The `robot_state_publisher` node reads URDF and publishes the robot's current state (joint positions) as transforms, enabling other nodes to understand where each part of the robot is located in 3D space. This is essential for tasks like inverse kinematics (calculating joint angles to reach a target position) and collision checking.
+
+For more information on ROS 2 topics and how robot state is communicated, see [Communication Patterns](./communication-patterns.md).
+
 ## Conceptual Understanding
 
 For this module, the key concepts to understand are:

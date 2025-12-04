@@ -210,6 +210,162 @@ Here's how ROS 2 components map to a humanoid robot's subsystems:
 | Planning | Planning nodes | Topics + Services | Sensor data (topics) → Plan requests (services) |
 | High-level Control | Behavior nodes | Actions | "Pick up object" → Manipulation action |
 
+### Bridging Python Agents to ROS Controllers
+
+High-level Python agents (AI systems, planning algorithms, decision-making modules) often need to communicate with low-level ROS 2 controllers that manage robot hardware. **Agent bridging** refers to the patterns and mechanisms that connect these high-level systems to ROS 2-based robot controllers using `rclpy` (ROS 2 Python client library).
+
+#### Agent-Controller Communication Patterns
+
+Python agents can bridge to ROS 2 controllers using the same communication patterns available in ROS 2:
+
+- **Topics**: For streaming commands or receiving continuous state updates
+- **Services**: For on-demand requests and synchronous operations
+- **Actions**: For long-running tasks that require feedback and cancellation
+
+Each pattern serves different needs in agent-controller communication, allowing agents to choose the most appropriate mechanism for their specific interaction.
+
+#### Example: Agent Using Topics
+
+Agents can publish commands to topics that controllers subscribe to:
+
+```python
+# Example: Python agent publishing movement commands to ROS 2 controller
+import rclpy
+from rclpy.node import Node
+from geometry_msgs.msg import Twist
+
+class AgentNode(Node):
+    """High-level agent that bridges to ROS 2 controllers via topics"""
+    
+    def __init__(self):
+        super().__init__('agent_node')
+        # Agent publishes commands to controller
+        self.command_publisher = self.create_publisher(
+            Twist,
+            '/robot/cmd_vel',  # Controller subscribes to this topic
+            10
+        )
+        # Agent subscribes to robot state from controller
+        self.state_subscription = self.create_subscription(
+            JointState,
+            '/joint_states',  # Controller publishes state here
+            self.state_callback,
+            10
+        )
+        self.current_state = None
+    
+    def state_callback(self, msg):
+        """Receive robot state from controller"""
+        self.current_state = msg
+        # Agent can make decisions based on current state
+    
+    def send_movement_command(self, linear_x, angular_z):
+        """Agent sends movement command to controller"""
+        msg = Twist()
+        msg.linear.x = linear_x
+        msg.angular.z = angular_z
+        self.command_publisher.publish(msg)
+        self.get_logger().info(f'Agent sent command: linear={linear_x}, angular={angular_z}')
+```
+
+This pattern enables agents to send continuous commands (like velocity commands) while receiving state updates, creating a feedback loop for control.
+
+#### Example: Agent Using Services
+
+Agents can call services provided by controllers for on-demand operations:
+
+```python
+# Example: Python agent calling controller service
+import rclpy
+from rclpy.node import Node
+from example_interfaces.srv import Trigger
+
+class AgentNode(Node):
+    """High-level agent bridging to ROS 2 controller via services"""
+    
+    def __init__(self):
+        super().__init__('agent_node')
+        # Agent creates service client to call controller service
+        self.arm_control_client = self.create_client(
+            Trigger,
+            '/robot/arm/activate'  # Controller provides this service
+        )
+    
+    def activate_arm(self):
+        """Agent requests controller to activate arm"""
+        request = Trigger.Request()
+        future = self.arm_control_client.call_async(request)
+        rclpy.spin_until_future_complete(self, future)
+        
+        if future.result().success:
+            self.get_logger().info('Agent successfully activated arm via controller')
+            return True
+        else:
+            self.get_logger().warn('Agent failed to activate arm')
+            return False
+```
+
+This pattern is useful when agents need to request specific actions from controllers and wait for confirmation before proceeding.
+
+#### Example: Agent Using Actions
+
+Agents can use actions for complex behaviors that require feedback:
+
+```python
+# Example: Python agent using action to control robot behavior
+import rclpy
+from rclpy.node import Node
+from rclpy.action import ActionClient
+from nav2_msgs.action import NavigateToPose
+
+class AgentNode(Node):
+    """High-level agent bridging to ROS 2 controller via actions"""
+    
+    def __init__(self):
+        super().__init__('agent_node')
+        # Agent creates action client
+        self._action_client = ActionClient(
+            self,
+            NavigateToPose,
+            '/robot/navigate_to_pose'  # Controller provides this action
+        )
+    
+    def navigate_to_goal(self, target_x, target_y):
+        """Agent sends navigation goal to controller via action"""
+        goal_msg = NavigateToPose.Goal()
+        goal_msg.pose.pose.position.x = target_x
+        goal_msg.pose.pose.position.y = target_y
+        
+        self._action_client.wait_for_server()
+        send_goal_future = self._action_client.send_goal_async(
+            goal_msg,
+            feedback_callback=self.feedback_callback
+        )
+        rclpy.spin_until_future_complete(self, send_goal_future)
+        
+        goal_handle = send_goal_future.result()
+        if not goal_handle.accepted:
+            self.get_logger().error('Agent goal rejected by controller')
+            return
+        
+        # Wait for result
+        result_future = goal_handle.get_result_async()
+        rclpy.spin_until_future_complete(self, result_future)
+        
+        result = result_future.result().result
+        self.get_logger().info(f'Agent navigation completed: {result}')
+    
+    def feedback_callback(self, feedback_msg):
+        """Agent receives feedback from controller during action execution"""
+        self.get_logger().info(
+            f'Agent received feedback: distance remaining = {feedback_msg.distance_remaining}'
+        )
+```
+
+This pattern enables agents to execute complex behaviors (like navigation) while receiving progress updates and maintaining the ability to cancel if needed.
+
+These bridging patterns allow Python agents to leverage ROS 2's communication infrastructure while maintaining separation between high-level decision-making (agents) and low-level control (controllers). For more details on these communication patterns, see [Communication Patterns](./communication-patterns.md).
+
 ## Complete System Example
 
 In a humanoid robot picking up an object:
