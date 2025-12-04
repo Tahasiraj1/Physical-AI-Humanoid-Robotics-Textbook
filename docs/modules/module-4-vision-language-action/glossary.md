@@ -2,7 +2,7 @@
 id: glossary
 title: Glossary - Key Terminology
 sidebar_position: 8
-description: Key terminology definitions for Module 4: Vision-Language-Action (VLA), including VLA, voice-to-action, cognitive planning, and related concepts.
+description: "Key terminology definitions for Module 4: Vision-Language-Action (VLA), including VLA, voice-to-action, cognitive planning, and related concepts."
 tags: [vla, glossary, terminology, definitions]
 ---
 
