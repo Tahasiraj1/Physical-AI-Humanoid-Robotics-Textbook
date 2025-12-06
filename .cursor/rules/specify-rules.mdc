@@ -7,6 +7,8 @@ Auto-generated from all feature plans. Last updated: 2025-12-04
 - Markdown files in `docs/modules/module-4-vision-language-action/`, visual assets in `_assets/` subdirectory (008-vla-module)
 - Python 3.11+ (for modern async support) (009-qdrant-setup)
 - Qdrant vector database (cloud-hosted, self-hosted, or local mode) (009-qdrant-setup)
+- TypeScript 5.6.2, React 19.0.0 + `@openai/chatkit-react`, `@docusaurus/core` 3.9.2, `@docusaurus/preset-classic` 3.9.2 (011-chatkit-widget)
+- Browser sessionStorage for conversation history (session-only, no persistence across browser sessions) (011-chatkit-widget)
 
 
 
@@ -26,6 +28,7 @@ tests/
 General: Follow standard conventions
 
 ## Recent Changes
+- 011-chatkit-widget: Added TypeScript 5.6.2, React 19.0.0 + `@openai/chatkit-react`, `@docusaurus/core` 3.9.2, `@docusaurus/preset-classic` 3.9.2
 - 009-qdrant-setup: Added Python 3.11+ (for modern async support)
 - 008-vla-module: Added Markdown (Docusaurus-compatible), Python (for code examples only) + Docusaurus (latest stable), Mermaid (for diagrams), Python syntax highlighting
 
