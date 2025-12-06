@@ -135,10 +135,31 @@ export default function ChatWidget(): ReactNode {
 
   return (
     <div className={styles.chatWidgetContainer}>
-      <ChatButton isOpen={isOpen} onClick={toggleWidget} />
+      {!isOpen && <ChatButton isOpen={isOpen} onClick={toggleWidget} />}
       <ChatWindow isOpen={isOpen}>
         <div className={styles.chatWindowHeader}>
           <h3>Ask about the Textbook</h3>
+          <button
+            className={styles.closeButton}
+            onClick={toggleWidget}
+            aria-label="Close chat widget"
+            type="button">
+            <svg
+              width="20"
+              height="20"
+              viewBox="0 0 24 24"
+              fill="none"
+              xmlns="http://www.w3.org/2000/svg"
+              aria-hidden="true">
+              <path
+                d="M19 9l-7 7-7-7"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              />
+            </svg>
+          </button>
         </div>
         <div className={styles.chatWindowBody}>
           <MessageList messages={messages} />

@@ -7,12 +7,10 @@ import type {ChatRequest, ChatResponse, ErrorInfo} from '../types';
 
 /**
  * Base URL for the FastAPI backend
- * TODO: Configure based on environment (dev/prod)
+ * Production: Hugging Face Spaces deployment
+ * Development: Local FastAPI server
  */
-const API_BASE_URL =
-  process.env.NODE_ENV === 'production'
-    ? 'https://your-backend-url.com' // TODO: Replace with actual production URL
-    : 'http://localhost:8000';
+const API_BASE_URL = 'https://tahasiraj1-humanoid-robotics-chatbot.hf.space'
 
 /**
  * Request timeout duration in milliseconds (30 seconds)

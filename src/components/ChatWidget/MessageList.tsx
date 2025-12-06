@@ -1,9 +1,10 @@
 /**
  * MessageList component
- * Displays conversation message history
+ * Displays conversation message history with auto-scroll
  */
 
 import type {ReactNode} from 'react';
+import {useEffect, useRef} from 'react';
 import clsx from 'clsx';
 import type {ChatMessage} from './types';
 import Citation from './Citation';
@@ -14,6 +15,24 @@ interface MessageListProps {
 }
 
 export default function MessageList({messages}: MessageListProps): ReactNode {
+  const messagesEndRef = useRef<HTMLDivElement>(null);
+  const messageListRef = useRef<HTMLDivElement>(null);
+
+  // Auto-scroll to bottom when new messages are added
+  useEffect(() => {
+    if (messagesEndRef.current && messageListRef.current) {
+      // Smooth scroll to bottom
+      messagesEndRef.current.scrollIntoView({behavior: 'smooth', block: 'end'});
+    }
+  }, [messages]);
+
+  // Also scroll on initial load if there are messages
+  useEffect(() => {
+    if (messages.length > 0 && messageListRef.current) {
+      messageListRef.current.scrollTop = messageListRef.current.scrollHeight;
+    }
+  }, []);
+
   if (messages.length === 0) {
     return (
       <div className={styles.messageListEmpty}>
@@ -23,7 +42,11 @@ export default function MessageList({messages}: MessageListProps): ReactNode {
   }
 
   return (
-    <div className={styles.messageList} role="log" aria-live="polite">
+    <div 
+      ref={messageListRef}
+      className={styles.messageList} 
+      role="log" 
+      aria-live="polite">
       {messages.map((message) => (
         <div
           key={message.id}
@@ -54,6 +77,7 @@ export default function MessageList({messages}: MessageListProps): ReactNode {
           )}
         </div>
       ))}
+      <div ref={messagesEndRef} />
     </div>
   );
 }
