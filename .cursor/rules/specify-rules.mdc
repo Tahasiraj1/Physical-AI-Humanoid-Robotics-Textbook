@@ -13,6 +13,8 @@ Auto-generated from all feature plans. Last updated: 2025-12-04
 - Browser sessionStorage (for session ID persistence) (012-chat-widget)
 - Python 3.11+ + FastEmbed >=0.7.4, FastAPI, Qdrant Client, OpenAI Agents SDK (for agent LLM) (013-fastembed-migration)
 - Qdrant vector database (collection: `textbook_content`, dimension: 384) (013-fastembed-migration)
+- TypeScript 5.6.2, Node.js >=20.0 + Docusaurus 3.9.2, React 19.0.0, @docusaurus/preset-classic 3.9.2 (014-urdu-i18n-support)
+- File-based (markdown files in `i18n/ur/docusaurus-plugin-content-docs/current/` directory structure) (014-urdu-i18n-support)
 
 
 
@@ -32,9 +34,9 @@ tests/
 General: Follow standard conventions
 
 ## Recent Changes
+- 014-urdu-i18n-support: Added TypeScript 5.6.2, Node.js >=20.0 + Docusaurus 3.9.2, React 19.0.0, @docusaurus/preset-classic 3.9.2
 - 013-fastembed-migration: Added Python 3.11+ + FastEmbed >=0.7.4, FastAPI, Qdrant Client, OpenAI Agents SDK (for agent LLM)
 - 012-chat-widget: Added TypeScript 5.6.2, React 19.0.0 + React, React DOM, Docusaurus 3.9.2, @mdx-js/react
-- 011-chatkit-widget: Added TypeScript 5.6.2, React 19.0.0 + `@openai/chatkit-react`, `@docusaurus/core` 3.9.2, `@docusaurus/preset-classic` 3.9.2
 
 
 

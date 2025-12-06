@@ -24,7 +24,21 @@ const config: Config = {
 
   i18n: {
     defaultLocale: 'en',
-    locales: ['en'],
+    locales: ['en', 'ur'],
+    localeConfigs: {
+      en: {
+        label: 'English',
+        direction: 'ltr',
+        htmlLang: 'en-US',
+        calendar: 'gregory',
+      },
+      ur: {
+        label: 'اردو',
+        direction: 'rtl',
+        htmlLang: 'ur',
+        calendar: 'gregory',
+      },
+    },
   },
 
   presets: [
@@ -61,6 +75,10 @@ const config: Config = {
           sidebarId: 'textbookSidebar',
           position: 'left',
           label: 'Textbook',
+        },
+        {
+          type: 'localeDropdown',
+          position: 'right',
         },
         {
           href: 'https://github.com/Tahasiraj1/Physical-AI-Humanoid-Robotics-Textbook',
