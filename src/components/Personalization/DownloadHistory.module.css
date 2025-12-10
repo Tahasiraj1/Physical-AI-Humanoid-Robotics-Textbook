@@ -1,0 +1,31 @@
+.downloadHistory {
+  margin: 1rem 0;
+}
+
+.downloadsList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.downloadItem {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.75rem;
+  margin-bottom: 0.5rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 4px;
+  background: var(--ifm-color-emphasis-100);
+}
+
+.fileName {
+  font-weight: 500;
+  color: var(--ifm-color-content);
+}
+
+.downloadDate {
+  font-size: 0.85rem;
+  color: var(--ifm-color-content-secondary);
+}
+

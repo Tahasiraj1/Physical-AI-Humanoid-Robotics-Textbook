@@ -1,0 +1,40 @@
+.notesList {
+  margin: 1rem 0;
+}
+
+.noteItem {
+  padding: 1rem;
+  margin-bottom: 1rem;
+  border: 1px solid var(--ifm-color-emphasis-200);
+  border-radius: 4px;
+  background: var(--ifm-color-emphasis-100);
+}
+
+.noteHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 0.5rem;
+}
+
+.noteLink {
+  font-weight: 600;
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+.noteLink:hover {
+  text-decoration: underline;
+}
+
+.noteDate {
+  font-size: 0.85rem;
+  color: var(--ifm-color-content-secondary);
+}
+
+.notePreview {
+  font-size: 0.9rem;
+  color: var(--ifm-color-content);
+  line-height: 1.5;
+}
+

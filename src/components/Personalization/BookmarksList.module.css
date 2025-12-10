@@ -1,0 +1,39 @@
+.bookmarksList {
+  margin: 1rem 0;
+}
+
+.moduleGroup {
+  margin-bottom: 1.5rem;
+}
+
+.moduleTitle {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-color-content);
+}
+
+.bookmarkList {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.bookmarkList li {
+  padding: 0.5rem 0;
+  border-bottom: 1px solid var(--ifm-color-emphasis-200);
+}
+
+.bookmarkList li:last-child {
+  border-bottom: none;
+}
+
+.bookmarkList a {
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+}
+
+.bookmarkList a:hover {
+  text-decoration: underline;
+}
+

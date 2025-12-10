@@ -1,0 +1,30 @@
+.bookmarkButton {
+  padding: 0.5rem 1rem;
+  background: var(--ifm-color-emphasis-200);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  color: var(--ifm-color-content);
+  text-decoration: none;
+  display: inline-block;
+}
+
+.bookmarkButton:hover {
+  background: var(--ifm-color-emphasis-300);
+  border-color: var(--ifm-color-emphasis-400);
+  text-decoration: none;
+}
+
+.bookmarkButton.bookmarked {
+  background: var(--ifm-color-primary-lightest);
+  border-color: var(--ifm-color-primary);
+  color: var(--ifm-color-primary-dark);
+}
+
+.bookmarkButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+

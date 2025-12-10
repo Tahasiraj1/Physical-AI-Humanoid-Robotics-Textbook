@@ -41,6 +41,10 @@ const config: Config = {
     },
   },
 
+  clientModules: [
+    require.resolve('./src/client-modules/navbar-inject.tsx'),
+  ],
+
   presets: [
     [
       'classic',
@@ -58,6 +62,9 @@ const config: Config = {
     ],
   ],
 
+  customFields: {
+    authUrl: 'https://physical-ai-auth-service-l2tf.vercel.app',
+  },
   themeConfig: {
     image: 'img/docusaurus-social-card.jpg',
     colorMode: {
@@ -78,6 +85,21 @@ const config: Config = {
         },
         {
           type: 'localeDropdown',
+          position: 'right',
+        },
+        {
+          to: '/dashboard',
+          label: 'Dashboard',
+          position: 'right',
+        },
+        {
+          to: '/signin',
+          label: 'Sign In',
+          position: 'right',
+        },
+        {
+          to: '/signup',
+          label: 'Sign Up',
           position: 'right',
         },
         {

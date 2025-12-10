@@ -22,12 +22,14 @@ const REQUEST_TIMEOUT = 30000;
  *
  * @param message - User message text (1-2000 characters)
  * @param sessionId - Session identifier (UUID)
+ * @param userId - Optional user ID for authenticated users
  * @returns Promise resolving to ChatResponse or rejecting with ErrorInfo
  * @throws ErrorInfo if request fails
  */
 export async function sendMessage(
   message: string,
   sessionId: string,
+  userId?: string,
 ): Promise<ChatResponse> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
@@ -36,6 +38,7 @@ export async function sendMessage(
     const requestBody: ChatRequest = {
       message,
       session_id: sessionId,
+      ...(userId && { user_id: userId }),
     };
 
     const response = await fetch(`${API_BASE_URL}/api/chat`, {

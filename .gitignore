@@ -15,6 +15,11 @@ Thumbs.db
 .env.local
 .env.*.local
 
+# Auth service environment
+Auth/.env
+Auth/dist
+Auth/node_modules
+
 # Build outputs
 dist/
 build/
@@ -61,7 +66,5 @@ coverage/
 *.tmp
 *.temp
 .cache/
-
-Chatbot
 
 humanoid-robotics-chatbot

@@ -1,0 +1,115 @@
+.profile {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.userInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.name {
+  font-weight: 600;
+  font-size: 0.9rem;
+  color: var(--ifm-color-content);
+}
+
+.email {
+  font-size: 0.8rem;
+  color: var(--ifm-color-content-secondary);
+}
+
+.actions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+.link {
+  font-size: 0.9rem;
+  color: var(--ifm-color-primary);
+  text-decoration: none;
+  padding: 0.25rem 0.5rem;
+  border-radius: 4px;
+  transition: background 0.2s;
+}
+
+.link:hover {
+  background: var(--ifm-color-emphasis-200);
+  text-decoration: none;
+}
+
+.signOutButton {
+  padding: 0.5rem 1rem;
+  background: transparent;
+  color: var(--ifm-color-content);
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.signOutButton:hover {
+  background: var(--ifm-color-emphasis-200);
+  border-color: var(--ifm-color-emphasis-400);
+}
+
+.editForm {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.input,
+.select {
+  padding: 0.5rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.formActions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.saveButton,
+.cancelButton,
+.editButton {
+  padding: 0.5rem 1rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.saveButton {
+  background: var(--ifm-color-primary);
+  color: white;
+  border-color: var(--ifm-color-primary);
+}
+
+.saveButton:hover:not(:disabled) {
+  background: var(--ifm-color-primary-dark);
+}
+
+.cancelButton,
+.editButton {
+  background: transparent;
+  color: var(--ifm-color-content);
+}
+
+.cancelButton:hover,
+.editButton:hover {
+  background: var(--ifm-color-emphasis-200);
+}
+
+.saveButton:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+

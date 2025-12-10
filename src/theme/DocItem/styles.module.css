@@ -1,0 +1,61 @@
+/**
+ * Styles for personalization section in DocItem
+ */
+
+.personalizationSection {
+  margin-top: 3rem;
+  padding-top: 2rem;
+  border-top: 2px solid var(--ifm-color-emphasis-200);
+}
+
+.personalizationHeader {
+  margin-bottom: 1.5rem;
+}
+
+.personalizationHeader h2 {
+  font-size: 1.5rem;
+  margin-bottom: 0.5rem;
+  color: var(--ifm-heading-color);
+}
+
+.personalizationActions {
+  margin-bottom: 2rem;
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+.actionItem {
+  display: flex;
+  align-items: center;
+}
+
+.personalizationContent {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.contentSection {
+  padding: 1.5rem;
+  background: var(--ifm-color-emphasis-100);
+  border-radius: var(--ifm-global-radius);
+  border: 1px solid var(--ifm-color-emphasis-200);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .personalizationSection {
+    margin-top: 2rem;
+    padding-top: 1.5rem;
+  }
+
+  .personalizationContent {
+    gap: 1.5rem;
+  }
+
+  .contentSection {
+    padding: 1rem;
+  }
+}
+

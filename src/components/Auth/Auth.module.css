@@ -1,0 +1,251 @@
+.authContainer {
+  max-width: 400px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  background: var(--ifm-background-color);
+}
+
+.authContainer h2 {
+  margin-bottom: 1.5rem;
+  text-align: center;
+}
+
+.authForm {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+
+.formGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.formGroup label {
+  font-weight: 600;
+  font-size: 0.9rem;
+}
+
+.input {
+  padding: 0.75rem;
+  border: 1px solid var(--ifm-color-emphasis-300);
+  border-radius: 4px;
+  font-size: 1rem;
+  transition: border-color 0.2s;
+}
+
+.input:focus {
+  outline: none;
+  border-color: var(--ifm-color-primary);
+  box-shadow: 0 0 0 3px var(--ifm-color-primary-lightest);
+}
+
+.helpText {
+  font-size: 0.85rem;
+  color: var(--ifm-color-content-secondary);
+  margin-top: 0.25rem;
+}
+
+.button {
+  padding: 0.75rem 1.5rem;
+  background: var(--ifm-color-primary);
+  color: white;
+  border: none;
+  border-radius: 4px;
+  font-size: 1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+  margin-top: 0.5rem;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--ifm-color-primary-dark);
+}
+
+.button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.buttonSpinner {
+  display: inline-block;
+  width: 14px;
+  height: 14px;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-top-color: white;
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+  margin-right: 0.5rem;
+  vertical-align: middle;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error {
+  padding: 0.75rem;
+  background: var(--ifm-color-danger-lightest);
+  color: var(--ifm-color-danger-dark);
+  border: 1px solid var(--ifm-color-danger);
+  border-radius: 4px;
+  font-size: 0.9rem;
+}
+
+.errorActions {
+  margin-top: 0.5rem;
+  padding-top: 0.5rem;
+  border-top: 1px solid var(--ifm-color-danger);
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.errorLink {
+  color: var(--ifm-color-danger-dark);
+  font-weight: 600;
+  text-decoration: underline;
+}
+
+.errorLink:hover {
+  color: var(--ifm-color-danger-darker);
+}
+
+.errorSeparator {
+  color: var(--ifm-color-danger);
+  font-weight: 600;
+}
+
+.footer {
+  margin-top: 1.5rem;
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--ifm-color-content-secondary);
+}
+
+.footer a {
+  color: var(--ifm-color-primary);
+  font-weight: 600;
+}
+
+/* Avatar Selection */
+.avatarGrid {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.avatarOption {
+  background: none;
+  border: 2px solid var(--ifm-color-emphasis-300);
+  border-radius: 8px;
+  padding: 0.25rem;
+  cursor: pointer;
+  transition: all 0.2s;
+  aspect-ratio: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+.avatarOption:hover {
+  border-color: var(--ifm-color-primary);
+  transform: scale(1.05);
+}
+
+.avatarOption img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+.avatarSelected {
+  border-color: var(--ifm-color-primary);
+  background: var(--ifm-color-primary-lightest);
+  box-shadow: 0 0 0 3px var(--ifm-color-primary-lightest);
+  transform: scale(1.05);
+}
+
+/* Personalization Section */
+.personalizationSection {
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--ifm-color-emphasis-300);
+}
+
+.personalizationTitle {
+  font-size: 1rem;
+  font-weight: 600;
+  margin-bottom: 1rem;
+  color: var(--ifm-color-content);
+}
+
+.checkboxGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.checkboxLabel {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  cursor: pointer;
+  font-weight: normal;
+  font-size: 0.9rem;
+  padding: 0.5rem;
+  border-radius: 4px;
+  transition: background-color 0.2s;
+}
+
+.checkboxLabel:hover {
+  background: var(--ifm-color-emphasis-100);
+}
+
+.checkboxLabel:has(input:checked) {
+  background: var(--ifm-color-primary-lightest);
+  font-weight: 600;
+}
+
+.checkboxLabel input[type='checkbox'] {
+  cursor: pointer;
+  width: 1.2em;
+  height: 1.2em;
+  accent-color: var(--ifm-color-primary);
+}
+
+.checkboxLabel span {
+  flex: 1;
+}
+
+.loading {
+  padding: 1rem;
+  text-align: center;
+  color: var(--ifm-color-content-secondary);
+  font-size: 0.9rem;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .avatarGrid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 0.5rem;
+  }
+  
+  .authContainer {
+    max-width: 100%;
+    padding: 1.5rem;
+  }
+}
+
