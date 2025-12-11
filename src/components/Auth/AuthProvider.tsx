@@ -1,5 +1,5 @@
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { getAuthClient } from '@site/src/lib/auth-client';
+import { getAuthClient, getAuthUrlString } from '@site/src/lib/auth-client';
 import type { User } from './useAuth';
 
 interface AuthContextType {
@@ -62,7 +62,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           console.warn('[AuthProvider] getSession() failed, trying direct API call:', clientError);
           // Fallback: Try direct API call
           try {
-            const authUrl = authClient.baseURL;
+            const authUrl = getAuthUrlString();
             const response = await fetch(`${authUrl}/api/auth/get-session`, {
               credentials: 'include',
               headers: {
@@ -277,7 +277,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         console.warn('[AuthProvider] Refresh: getSession() failed, trying direct API call:', clientError);
         // Fallback: Try direct API call
         try {
-          const authUrl = typeof authClient.baseURL === 'string' ? authClient.baseURL : 'http://localhost:3000';
+          const authUrl = getAuthUrlString();
           const response = await fetch(`${authUrl}/api/auth/get-session`, {
             credentials: 'include',
             headers: {
