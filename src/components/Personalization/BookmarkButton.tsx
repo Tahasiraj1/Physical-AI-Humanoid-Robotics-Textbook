@@ -79,7 +79,7 @@ export default function BookmarkButton({ moduleId, sectionId }: BookmarkButtonPr
         } else if (error.message.includes('Failed to delete bookmark')) {
           errorMessage = 'Failed to delete bookmark. Please try again.';
         } else if (error.message.includes('NetworkError') || error.message.includes('fetch') || error.message.includes('Failed to fetch')) {
-          errorMessage = 'Network error. Please check if the Auth server is running on http://localhost:3000';
+          errorMessage = 'Network error. Please check your connection and try again.';
         } else {
           errorMessage = `Error: ${error.message}`;
         }

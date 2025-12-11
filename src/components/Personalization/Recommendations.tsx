@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getAuthUrl } from '@site/src/lib/auth-url';
 import Link from '@docusaurus/Link';
 import styles from './Recommendations.module.css';
 
@@ -13,9 +14,7 @@ export default function Recommendations() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const authUrl = typeof window !== 'undefined' 
-      ? (window as any).__AUTH_URL__ || 'http://localhost:3000'
-      : 'http://localhost:3000';
+    const authUrl = getAuthUrl();
     
     fetch(`${authUrl}/api/personalization/recommendations`, {
       credentials: 'include',

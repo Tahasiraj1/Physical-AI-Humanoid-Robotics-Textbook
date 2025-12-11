@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getAuthUrl } from '@site/src/lib/auth-url';
 import styles from './ChatHistory.module.css';
 
 interface ChatSession {
@@ -14,9 +15,7 @@ export default function ChatHistory() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const authUrl = typeof window !== 'undefined' 
-      ? (window as any).__AUTH_URL__ || 'http://localhost:3000'
-      : 'http://localhost:3000';
+    const authUrl = getAuthUrl();
     
     fetch(`${authUrl}/api/personalization/chat-sessions`, {
       credentials: 'include',

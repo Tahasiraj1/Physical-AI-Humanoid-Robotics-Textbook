@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { getAuthUrl } from '@site/src/lib/auth-url';
 import styles from './DownloadHistory.module.css';
 
 interface Download {
@@ -17,9 +18,7 @@ export default function DownloadHistory() {
 
   useEffect(() => {
     // Fetch from dashboard data
-    const authUrl = typeof window !== 'undefined' 
-      ? (window as any).__AUTH_URL__ || 'http://localhost:3000'
-      : 'http://localhost:3000';
+    const authUrl = getAuthUrl();
     
     fetch(`${authUrl}/api/personalization/dashboard`, {
       credentials: 'include',

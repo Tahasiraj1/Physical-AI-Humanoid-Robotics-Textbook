@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { useAuthContext } from '@site/src/components/Auth/AuthProvider';
+import { getAuthUrl } from '@site/src/lib/auth-url';
 import Link from '@docusaurus/Link';
 import styles from './CommentSection.module.css';
 
@@ -26,9 +27,7 @@ export default function CommentSection({ moduleId, sectionId }: CommentSectionPr
 
   const fetchComments = async () => {
     try {
-      const authUrl = typeof window !== 'undefined' 
-        ? (window as any).__AUTH_URL__ || 'http://localhost:3000'
-        : 'http://localhost:3000';
+      const authUrl = getAuthUrl();
       const response = await fetch(
         `${authUrl}/api/personalization/comments?moduleId=${moduleId}&sectionId=${sectionId}`
       );
@@ -61,9 +60,7 @@ export default function CommentSection({ moduleId, sectionId }: CommentSectionPr
 
     setSubmitting(true);
     try {
-      const authUrl = typeof window !== 'undefined' 
-        ? (window as any).__AUTH_URL__ || 'http://localhost:3000'
-        : 'http://localhost:3000';
+      const authUrl = getAuthUrl();
       const response = await fetch(`${authUrl}/api/personalization/comments`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },

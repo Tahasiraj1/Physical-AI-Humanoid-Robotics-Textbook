@@ -1,4 +1,4 @@
-import useDocusaurusContext from '@docusaurus/useDocusaurusContext';
+import { getAuthUrl } from '@site/src/lib/auth-url';
 
 const API_BASE = '/api/personalization';
 
@@ -7,14 +7,7 @@ const API_BASE = '/api/personalization';
  */
 export class ProgressService {
   private getAuthUrl(): string {
-    try {
-      const { siteConfig } = useDocusaurusContext();
-      return (siteConfig.customFields?.authUrl as string) || 'http://localhost:3000';
-    } catch {
-      return typeof window !== 'undefined' 
-        ? (window as any).__AUTH_URL__ || 'http://localhost:3000'
-        : 'http://localhost:3000';
-    }
+    return getAuthUrl(); // Use shared utility
   }
 
   /**

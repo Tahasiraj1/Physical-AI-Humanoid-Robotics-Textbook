@@ -1,13 +1,10 @@
+import { getAuthUrl } from '@site/src/lib/auth-url';
+
 const API_BASE = '/api/personalization';
 
 export class BookmarkService {
   private getAuthUrl(): string {
-    // Get auth URL from window or default
-    return typeof window !== 'undefined' 
-      ? (window as any).__AUTH_URL__ || 
-        (document.querySelector('meta[name="auth-url"]')?.getAttribute('content')) ||
-        'http://localhost:3000'
-      : 'http://localhost:3000';
+    return getAuthUrl(); // Use shared utility
   }
 
   async createBookmark(moduleId: string, sectionId: string) {
