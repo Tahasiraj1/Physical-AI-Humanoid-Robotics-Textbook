@@ -15,6 +15,7 @@ const SESSION_STORAGE_KEY = 'chatSessionId';
 export function useChatSession() {
   const [sessionId, setSessionId] = useState<string | null>(null);
   const [storageError, setStorageError] = useState<Error | null>(null);
+  const [contextSentForSessions, setContextSentForSessions] = useState<Set<string>>(new Set());
 
   // Retrieve session ID from sessionStorage on mount
   useEffect(() => {
@@ -109,12 +110,36 @@ export function useChatSession() {
     }
   }, []);
 
+  /**
+   * Check if context has been sent for a session
+   */
+  const hasContextBeenSent = useCallback((id: string): boolean => {
+    return contextSentForSessions.has(id);
+  }, [contextSentForSessions]);
+
+  /**
+   * Mark context as sent for a session
+   */
+  const markContextAsSent = useCallback((id: string): void => {
+    setContextSentForSessions(prev => new Set(prev).add(id));
+  }, []);
+
+  /**
+   * Clear context tracking (e.g., when user changes)
+   */
+  const clearContextTracking = useCallback((): void => {
+    setContextSentForSessions(new Set());
+  }, []);
+
   return {
     sessionId,
     saveSession,
     clearSession,
     getSession,
     initializeSession,
+    hasContextBeenSent,
+    markContextAsSent,
+    clearContextTracking,
     storageError, // Expose error for component to handle
   };
 }

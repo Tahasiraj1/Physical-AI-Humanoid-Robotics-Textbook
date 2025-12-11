@@ -3,7 +3,10 @@
  * Handles communication with FastAPI backend
  */
 
-import type {ChatRequest, ChatResponse, ErrorInfo} from '../types';
+import type {ChatRequest, ChatResponse, ErrorInfo, UserContext} from '../types';
+import { progressService } from '@site/src/components/Personalization/services/progressService';
+import { bookmarkService } from '@site/src/components/Personalization/services/bookmarkService';
+import { noteService } from '@site/src/components/Personalization/services/noteService';
 
 /**
  * Base URL for the FastAPI backend
@@ -18,11 +21,77 @@ const API_BASE_URL = 'https://tahasiraj1-humanoid-robotics-chatbot.hf.space'
 const REQUEST_TIMEOUT = 30000;
 
 /**
+ * Fetch user personalization data for chatbot context
+ * Returns undefined if user is not authenticated or fetch fails
+ *
+ * @param userId - User ID for authenticated users
+ * @returns Promise resolving to UserContext or undefined
+ */
+async function fetchUserContext(userId: string): Promise<UserContext | undefined> {
+  try {
+    // Fetch all user data in parallel (use allSettled so one failure doesn't block others)
+    const [progressData, bookmarksData, notesData] = await Promise.allSettled([
+      progressService.getUserProgress(),
+      bookmarkService.getBookmarks(),
+      noteService.getNotes(),
+    ]);
+
+    const context: UserContext = {};
+
+    // Process progress data
+    if (progressData.status === 'fulfilled') {
+      const progress = progressData.value;
+      const completedSections = progress.progress?.filter((p: any) => p.completed) || [];
+      const completedModules = new Set(completedSections.map((p: any) => p.moduleId));
+      
+      context.progress = {
+        completedModules: Array.from(completedModules),
+        completedSections: completedSections.map((p: any) => ({
+          moduleId: p.moduleId,
+          sectionId: p.sectionId,
+        })),
+        progressSummary: progress.summary || {},
+      };
+    } else {
+      console.warn('[chatService] Failed to fetch progress data:', progressData.reason);
+    }
+
+    // Process bookmarks
+    if (bookmarksData.status === 'fulfilled') {
+      context.bookmarks = bookmarksData.value.bookmarks?.map((b: any) => ({
+        moduleId: b.moduleId,
+        sectionId: b.sectionId,
+        title: b.title,
+      })) || [];
+    } else {
+      console.warn('[chatService] Failed to fetch bookmarks data:', bookmarksData.reason);
+    }
+
+    // Process notes (limit content length to avoid large payloads)
+    if (notesData.status === 'fulfilled') {
+      context.notes = notesData.value.notes?.map((n: any) => ({
+        moduleId: n.moduleId,
+        sectionId: n.sectionId,
+        content: n.content.substring(0, 200), // Limit to 200 characters (T021)
+      })) || [];
+    } else {
+      console.warn('[chatService] Failed to fetch notes data:', notesData.reason);
+    }
+
+    return context;
+  } catch (error) {
+    console.warn('[chatService] Failed to fetch user context:', error);
+    return undefined; // Return undefined if fetch fails - chatbot will work without context
+  }
+}
+
+/**
  * Send a chat message to the backend and receive a response
  *
  * @param message - User message text (1-2000 characters)
  * @param sessionId - Session identifier (UUID)
  * @param userId - Optional user ID for authenticated users
+ * @param includeUserContext - Whether to include user personalization data (default: false)
  * @returns Promise resolving to ChatResponse or rejecting with ErrorInfo
  * @throws ErrorInfo if request fails
  */
@@ -30,15 +99,23 @@ export async function sendMessage(
   message: string,
   sessionId: string,
   userId?: string,
+  includeUserContext: boolean = false,
 ): Promise<ChatResponse> {
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
   try {
+    // Fetch user context if user is authenticated and context is requested
+    let userContext: UserContext | undefined;
+    if (userId && includeUserContext) {
+      userContext = await fetchUserContext(userId);
+    }
+
     const requestBody: ChatRequest = {
       message,
       session_id: sessionId,
       ...(userId && { user_id: userId }),
+      ...(userContext && { user_context: userContext }),
     };
 
     const response = await fetch(`${API_BASE_URL}/api/chat`, {

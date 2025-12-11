@@ -11,6 +11,8 @@ interface UseChatAPIReturn {
   sendMessage: (
     message: string,
     sessionId: string,
+    userId?: string,
+    includeUserContext?: boolean,
   ) => Promise<ChatResponse>;
   isLoading: boolean;
   error: ErrorInfo | null;
@@ -27,7 +29,12 @@ export function useChatAPI(): UseChatAPIReturn {
   const [error, setError] = useState<ErrorInfo | null>(null);
 
   const sendMessage = useCallback(
-    async (message: string, sessionId: string): Promise<ChatResponse> => {
+    async (
+      message: string,
+      sessionId: string,
+      userId?: string,
+      includeUserContext: boolean = false,
+    ): Promise<ChatResponse> => {
       // Prevent duplicate sends
       if (isLoading) {
         throw {
@@ -42,7 +49,7 @@ export function useChatAPI(): UseChatAPIReturn {
       setError(null);
 
       try {
-        const response = await apiSendMessage(message, sessionId);
+        const response = await apiSendMessage(message, sessionId, userId, includeUserContext);
         setIsLoading(false);
         return response;
       } catch (err) {

@@ -4,7 +4,7 @@
  */
 
 import type {ReactNode} from 'react';
-import {useState, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import ChatButton from './ChatButton';
 import ChatWindow from './ChatWindow';
 import MessageList from './MessageList';
@@ -14,6 +14,7 @@ import ErrorMessage from './ErrorMessage';
 import {useChatSession} from './hooks/useChatSession';
 import {useChatAPI} from './hooks/useChatAPI';
 import {useMessageValidation} from './hooks/useMessageValidation';
+import {useAuthContext} from '@site/src/components/Auth/AuthProvider';
 import type {ChatMessage, ErrorInfo} from './types';
 import styles from './styles.module.css';
 
@@ -22,9 +23,29 @@ export default function ChatWidget(): ReactNode {
   const [messages, setMessages] = useState<ChatMessage[]>([]);
   const [error, setError] = useState<ErrorInfo | null>(null);
 
-  const {sessionId, saveSession} = useChatSession();
+  const {user} = useAuthContext();
+  const {sessionId, saveSession, hasContextBeenSent, markContextAsSent, clearContextTracking} = useChatSession();
   const {sendMessage: apiSendMessage, isLoading: apiLoading, error: apiError, clearError: clearApiError} = useChatAPI();
   const validation = useMessageValidation();
+
+  // Clear context tracking when user changes (FR-011)
+  const previousUserIdRef = React.useRef<string | null>(null);
+  useEffect(() => {
+    if (user?.id) {
+      // User is authenticated - context tracking will be managed per session
+      // If user ID changes, clear tracking to ensure new user's context is sent
+      if (previousUserIdRef.current !== null && previousUserIdRef.current !== user.id) {
+        clearContextTracking();
+      }
+      previousUserIdRef.current = user.id;
+    } else {
+      // User logged out - clear tracking
+      if (previousUserIdRef.current !== null) {
+        clearContextTracking();
+      }
+      previousUserIdRef.current = null;
+    }
+  }, [user?.id, clearContextTracking]);
 
   // Widget always starts closed on new page load (per FR-011)
   // State is reset on mount, but messages persist if session exists
@@ -75,9 +96,22 @@ export default function ChatWidget(): ReactNode {
       // Use existing sessionId from sessionStorage or create new one on first message
       // Session ID persists across page navigations via sessionStorage (per US3)
       const currentSessionId = sessionId || crypto.randomUUID();
+      
+      // Check if this is the first message of a new session (context not sent yet)
+      const isFirstMessage = !hasContextBeenSent(currentSessionId);
 
-      // Send message to backend using hook
-      const response = await apiSendMessage(messageText, currentSessionId);
+      // Send message to backend using hook with user context on first message
+      const response = await apiSendMessage(
+        messageText,
+        currentSessionId,
+        user?.id,
+        isFirstMessage && !!user?.id, // Include context only on first message and if authenticated
+      );
+
+      // Mark context as sent for this session after successful send
+      if (isFirstMessage && user?.id) {
+        markContextAsSent(currentSessionId);
+      }
 
       // Save session ID if this is the first message or if backend returned different ID
       // This ensures session persistence across page navigations (per US3)

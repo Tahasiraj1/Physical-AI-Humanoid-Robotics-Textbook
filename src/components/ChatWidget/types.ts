@@ -50,12 +50,35 @@ export interface ChatSession {
 }
 
 /**
+ * User personalization context for chatbot requests
+ */
+export interface UserContext {
+  progress?: {
+    completedModules?: string[];
+    completedSections?: Array<{ moduleId: string; sectionId: string }>;
+    progressSummary?: Record<string, { progressPercentage: number }>;
+  };
+  bookmarks?: Array<{
+    moduleId: string;
+    sectionId: string;
+    title?: string;
+  }>;
+  notes?: Array<{
+    moduleId: string;
+    sectionId: string;
+    content: string; // Max 200 characters
+  }>;
+}
+
+/**
  * API Request interface for chat endpoint
  */
 export interface ChatRequest {
   message: string; // User message (1-2000 characters)
   session_id: string; // Session identifier (UUID)
   thread_id?: string; // Optional thread ID (not used in MVP)
+  user_id?: string; // Optional user ID for authenticated users
+  user_context?: UserContext; // Optional user personalization context
 }
 
 /**
