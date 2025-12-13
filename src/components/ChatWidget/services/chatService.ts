@@ -13,7 +13,7 @@ import { noteService } from '@site/src/components/Personalization/services/noteS
  * Production: Hugging Face Spaces deployment
  * Development: Local FastAPI server
  */
-const API_BASE_URL = 'http://localhost:8000'
+const API_BASE_URL = 'https://tahasiraj1-humanoid-robotics-chatbot.hf.space'
 
 /**
  * Request timeout duration in milliseconds (30 seconds)
