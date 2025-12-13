@@ -13,7 +13,7 @@ import { noteService } from '@site/src/components/Personalization/services/noteS
  * Production: Hugging Face Spaces deployment
  * Development: Local FastAPI server
  */
-const API_BASE_URL = 'https://tahasiraj1-humanoid-robotics-chatbot.hf.space'
+const API_BASE_URL = 'http://localhost:8000'
 
 /**
  * Request timeout duration in milliseconds (30 seconds)
@@ -42,7 +42,7 @@ async function fetchUserContext(userId: string): Promise<UserContext | undefined
     if (progressData.status === 'fulfilled') {
       const progress = progressData.value;
       const completedSections = progress.progress?.filter((p: any) => p.completed) || [];
-      const completedModules = new Set(completedSections.map((p: any) => p.moduleId));
+      const completedModules = new Set<string>(completedSections.map((p: any) => p.moduleId as string));
       
       context.progress = {
         completedModules: Array.from(completedModules),
